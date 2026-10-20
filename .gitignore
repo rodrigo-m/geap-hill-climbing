@@ -1,0 +1,61 @@
+# --- Secrets, Credentials & Environment Variables ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.cert
+*credentials*.json
+*service_account*.json
+*service-account*.json
+gcp-key*.json
+client_secret*.json
+token.json
+oauth2_*.json
+application_default_credentials.json
+
+# --- Agent Runtime, Sessions & Artifacts ---
+.adk/
+.agent/
+agent_data/
+agent_sessions/
+session_history/
+.sessions/
+artifacts/
+scratch/
+brain/
+.gemini/
+.jetski/
+sidecar_data/
+mcp_logs/
+
+# --- Evaluations, Observability & Tracing ---
+logs/
+*.log
+eval_results/
+eval_runs/
+trace_data/
+
+# --- Python Environment & Bytecode ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# --- Virtual Environments ---
+.venv/
+venv/
+env/
+activate.sh
+
+# --- Operating System & Editor Artifacts ---
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
