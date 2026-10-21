@@ -59,3 +59,5 @@ activate.sh
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
+blueprint.md
+goals.md
