@@ -32,6 +32,7 @@ mcp_logs/
 # --- Evaluations, Observability & Tracing ---
 logs/
 *.log
+results/
 eval_results/
 eval_runs/
 trace_data/

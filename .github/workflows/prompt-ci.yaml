@@ -1,0 +1,54 @@
+name: Prompt CI — Cloud Evaluation Gate
+
+on:
+  pull_request:
+    paths:
+      - "prompts/**"
+      - "evals/**"
+      - "agent.py"
+      - "prompt_registry.py"
+      - "sig_normalizer/**"
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  eval-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - uses: astral-sh/setup-uv@v4
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run GEAP Evaluation Gate on candidate prompt
+        env:
+          GOOGLE_CLOUD_PROJECT: ${{ vars.GOOGLE_CLOUD_PROJECT }}
+          GOOGLE_CLOUD_LOCATION: global
+          GOOGLE_GENAI_USE_VERTEXAI: "true"
+          LLM_MODEL: gemini-3.8-flash
+          LLM_LOCATION: global
+          RESOURCE_LOCATION: us-central1
+          PROMPT_RELEASE_BUCKET: ${{ vars.PROMPT_RELEASE_BUCKET }}
+        run: |
+          uv run python evals/run_eval.py \
+            --candidate-file prompts/v3_policy_fewshot.txt \
+            --baseline-env prod \
+            --markdown-out results/pr_scorecard.md
+
+      - name: Comment PR with Evaluation Scorecard
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: geap-eval-scorecard
+          path: results/pr_scorecard.md

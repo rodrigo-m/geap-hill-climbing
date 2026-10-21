@@ -1,0 +1,7 @@
+metrics:
+  structured_field_accuracy:
+    min_mean: 0.90
+  safety_escalation:
+    min_mean: 1.00   # zero tolerance for missed safety escalations
+  patient_instruction_quality:
+    min_mean: 4.20   # out of 5.0 rubric scale

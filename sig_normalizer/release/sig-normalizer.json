@@ -1,0 +1,38 @@
+{
+  "prompt_name": "sig-normalizer",
+  "prompt_id": "8357339779091660800",
+  "scratch_prompt_id": "2302250080092028928",
+  "resource_location": "us-central1",
+  "versions": {
+    "v1": {
+      "version_id": "1",
+      "version_tag": "v1_naive",
+      "display_name": "v1: naive baseline"
+    },
+    "v2": {
+      "version_id": "2",
+      "version_tag": "v2_schema",
+      "display_name": "v2: strict JSON schema + abbrev map"
+    },
+    "v3": {
+      "version_id": "3",
+      "version_tag": "v3_policy_fewshot",
+      "display_name": "v3: ISMP safety policy + few-shot"
+    }
+  },
+  "environments": {
+    "prod": {
+      "version_id": "3",
+      "version_tag": "v3_policy_fewshot",
+      "previous_version_id": "1",
+      "updated_at": "2026-10-21T00:32:17Z",
+      "updated_by": "promote.py"
+    },
+    "staging": {
+      "version_id": "3",
+      "version_tag": "v3_policy_fewshot",
+      "updated_at": "2026-10-21T00:23:27Z",
+      "updated_by": "seed_prompts.py"
+    }
+  }
+}

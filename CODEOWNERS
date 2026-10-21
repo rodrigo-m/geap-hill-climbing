@@ -1,0 +1,5 @@
+# Prompt templates, evaluation golden sets, quality thresholds, and release
+# pointers require review from both clinical safety and platform owners.
+/prompts/                @pharmacy-clinical-safety-leads @genai-platform-owners
+/evals/                  @pharmacy-clinical-safety-leads @genai-platform-owners
+/release/                @pharmacy-clinical-safety-leads @genai-platform-owners

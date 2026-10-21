@@ -1,0 +1,40 @@
+name: Prompt CD — Register Version & Promote
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "prompts/**"
+      - "release/**"
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - uses: astral-sh/setup-uv@v4
+      - run: uv sync
+
+      - name: Verify evaluation gate and sync release pointer to GCS
+        env:
+          GOOGLE_CLOUD_PROJECT: ${{ vars.GOOGLE_CLOUD_PROJECT }}
+          GOOGLE_CLOUD_LOCATION: global
+          GOOGLE_GENAI_USE_VERTEXAI: "true"
+          LLM_MODEL: gemini-3.8-flash
+          LLM_LOCATION: global
+          RESOURCE_LOCATION: us-central1
+          PROMPT_RELEASE_BUCKET: ${{ vars.PROMPT_RELEASE_BUCKET }}
+        run: |
+          uv run python evals/run_eval.py --env staging
+          gcloud storage cp release/sig-normalizer.json "${PROMPT_RELEASE_BUCKET}/release/sig-normalizer.json"
